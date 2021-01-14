@@ -8,26 +8,20 @@ It can also be ran via p4a/buildozer.
 """
 from kivy.app import App
 from kivy.lang import Builder
+from kivy_garden.zbarcam import ZBarCam
+from kivy.uix.boxlayout import BoxLayout
 
-DEMO_APP_KV_LANG = """
-#:import ZBarCam kivy_garden.zbarcam.ZBarCam
-BoxLayout:
-    orientation: 'vertical'
-    ZBarCam:
-        id: zbarcam
-        # optional, by default checks all types
-        code_types: 'QRCODE', 'EAN13'
-    Label:
-        size_hint: None, None
-        size: self.texture_size[0], 50
-        text: ', '.join([str(symbol.data) for symbol in zbarcam.symbols])
-"""
+
+class MainBox(BoxLayout):
+
+    def __init__(self, **kwargs):
+        super(MainBox, self).__init__(**kwargs)
 
 
 class DemoApp(App):
 
     def build(self):
-        return Builder.load_string(DEMO_APP_KV_LANG)
+        return MainBox()
 
 
 if __name__ == '__main__':
