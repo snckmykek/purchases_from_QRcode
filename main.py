@@ -11,7 +11,7 @@ from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 
-Builder.load_string("main.kv")
+Builder.load_file('main.kv')
 
 
 class ZBarPopup(Popup):
