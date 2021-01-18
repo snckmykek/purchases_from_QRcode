@@ -26,7 +26,6 @@ class ZBar(BoxLayout):
         super(ZBar, self).__init__(**kwargs)
 
         self.zbarpopup = ZBarPopup()
-        self.symbols = self.zbarpopup.ids.zbarcam.symbols
         self.zbarpopup.bind(on_dismiss=self.process_characters)
 
         self.label = self.ids.label
@@ -35,7 +34,7 @@ class ZBar(BoxLayout):
         self.zbarpopup.open()
 
     def process_characters(self, *args):
-        self.label.text = ', '.join([str(symbol.data) for symbol in self.symbols])
+        self.label.text = ', '.join([str(symbol.data) for symbol in self.zbarpopup.ids.zbarcam.symbols])
 
 
 class DemoApp(App):
