@@ -64,7 +64,8 @@ class ZBarCam(AnchorLayout):
         self.symbols = self._detect_qrcode_frame(
             texture=instance.texture, code_types=self.code_types)
         # TODO: Изменить логику
-        self.parent_popup.dismiss()
+        if self.symbols:
+            self.parent_popup.dismiss()
 
     @classmethod
     def _detect_qrcode_frame(cls, texture, code_types):
