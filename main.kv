@@ -1,0 +1,17 @@
+#:import ZBarCam kivy_garden.zbarcam.ZBarCam
+#:import ZBarSymbol pyzbar.pyzbar.ZBarSymbol
+
+
+ZBar:
+    Button:
+        on_press: root.get_qrcode()
+    Label:
+        id: label
+
+
+
+<ZBarPopup>:
+    ZBarCam:
+        id: zbarcam
+        # optional, by default checks all types
+        code_types: ZBarSymbol.QRCODE, ZBarSymbol.EAN13

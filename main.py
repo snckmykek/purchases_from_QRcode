@@ -8,27 +8,40 @@ It can also be ran via p4a/buildozer.
 """
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.popup import Popup
 
-DEMO_APP_KV_LANG = """
-#:import ZBarCam kivy_garden.zbarcam.ZBarCam
-#:import ZBarSymbol pyzbar.pyzbar.ZBarSymbol
-BoxLayout:
-    orientation: 'vertical'
-    ZBarCam:
-        id: zbarcam
-        # optional, by default checks all types
-        code_types: ZBarSymbol.QRCODE, ZBarSymbol.EAN13
-    Label:
-        size_hint: None, None
-        size: self.texture_size[0], 50
-        text: ', '.join([str(symbol.data) for symbol in zbarcam.symbols])
-"""
+Builder.load_string("main.kv")
+
+
+class ZBarPopup(Popup):
+
+    def __init__(self, **kwargs):
+        super(ZBarPopup, self).__init__(**kwargs)
+
+
+class ZBar(BoxLayout):
+
+    def __init__(self, **kwargs):
+        super(ZBar, self).__init__(**kwargs)
+
+        self.zbarpopup = ZBarPopup()
+        self.zbarpopup.bind(on_dismiss=self.process_characters())
+        self.symbols = self.zbarpopup.ids.zbarcam.symbols
+
+        self.label = self.ids.label
+
+    def get_qrcode(self):
+        self.zbarpopup.open()
+
+    def process_characters(self):
+        self.label.text = ', '.join([str(symbol.data) for symbol in self.symbols])
 
 
 class DemoApp(App):
 
     def build(self):
-        return Builder.load_string(DEMO_APP_KV_LANG)
+        return ZBar()
 
 
 if __name__ == '__main__':
