@@ -24,6 +24,7 @@ class ZBarCam(AnchorLayout):
     Symbol = namedtuple('Symbol', ['type', 'data'])
     # checking all possible types by default
     code_types = ListProperty(set(pyzbar.ZBarSymbol))
+    parent_popup = None
 
     def __init__(self, **kwargs):
         # lazy loading the kv file rather than loading at module level,
@@ -63,7 +64,7 @@ class ZBarCam(AnchorLayout):
         self.symbols = self._detect_qrcode_frame(
             texture=instance.texture, code_types=self.code_types)
         # TODO: Изменить логику
-        self.parent.parent.dismiss()
+        self.parent_popup.dismiss()
 
     @classmethod
     def _detect_qrcode_frame(cls, texture, code_types):
