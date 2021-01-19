@@ -11,6 +11,9 @@ from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 
+import json
+from get_check.nalog_python import NalogRuPython
+
 Builder.load_file('main.kv')
 
 
@@ -28,13 +31,17 @@ class ZBar(BoxLayout):
         self.zbarpopup = ZBarPopup()
         self.zbarpopup.bind(on_dismiss=self.process_characters)
 
+        self.client = NalogRuPython()
+
         self.label = self.ids.label
 
     def get_qrcode(self):
         self.zbarpopup.open()
 
     def process_characters(self, *args):
-        self.label.text = ', '.join([str(symbol.data) for symbol in self.zbarpopup.ids.zbarcam.symbols])
+        qr_code = '&'.join([str(symbol.data) for symbol in self.zbarpopup.ids.zbarcam.symbols])
+        ticket = self.client.get_ticket(qr_code)
+        self.label.text = json.dumps(ticket, indent=4, ensure_ascii=False)
 
 
 class DemoApp(App):
